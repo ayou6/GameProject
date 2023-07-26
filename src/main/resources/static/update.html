@@ -52,13 +52,14 @@
         /* Success message styling */
         .success-message {
             margin-top: 10px;
-            color: green;
+            color: rgb(16, 153, 123);
             font-weight: bold;
             display: none;
         }
     </style>
-    <body>
-         <!-- Navbar -->
+
+<body>
+    <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="collapse navbar-collapse" id="navbarColor01">
             <ul class="navbar-nav mr-auto">
@@ -79,16 +80,53 @@
     </nav>
     <center>
         <form>
-            <h3>Register New Player</h3>
+            <h3>Edit the Player</h3>
             <br>
-            <input id="id" placeholder="Enter ID" required>
-            <br>
-            <br>
-            <input id="name" placeholder="Enter Name" required>
+            <input id="idUpdate" placeholder="Enter ID" required>
             <br>
             <br>
-            <button type="submit" onclick="addPlayer()">Save Player</button>
-            <div class="success-message" id="successMessage">Player added successfully!</div>
+            <input id="nameUpdate" placeholder="Enter New Name" required>
+            <br>
+            <br>
+            <button type="button" onclick="editPlayer()">Save Player</button>
+            <div class="success-message" id="successMessage">Player editted successfully!</div>
         </form>
     </center>
-    </body>
+    <script>
+        function editPlayer() {
+            var myHeaders = new Headers();
+            myHeaders.append("Content-Type", "application/json");
+
+            const idValue = document.getElementById("idUpdate").value;
+            const namValue = document.getElementById("nameUpdate").value;
+
+
+            var raw = JSON.stringify({
+                "name": namValue
+            });
+
+            var requestOptions = {
+                method: 'PUT',
+                headers: myHeaders,
+                body: raw,
+            };
+
+            fetch("http://localhost:8080/api/v1/player/" + idValue, requestOptions)
+                .then(response => response.json())
+                .then(result => {
+                    console.log(result);
+                    showSuccessMessage();
+                })
+                .catch(error => console.log('error', error));
+        }
+
+        function showSuccessMessage() {
+            var successMessage = document.getElementById("successMessage");
+            successMessage.style.display = "block";
+
+            setTimeout(function () {
+                successMessage.style.display = "none";
+            }, 3000); // Hide the success message after 3 seconds
+        }
+    </script>
+</body>

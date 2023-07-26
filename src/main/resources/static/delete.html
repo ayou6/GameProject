@@ -52,7 +52,7 @@
         /* Success message styling */
         .success-message {
             margin-top: 10px;
-            color: green;
+            color: rgb(255, 9, 9);
             font-weight: bold;
             display: none;
         }
@@ -87,7 +87,7 @@
             <input id="id" placeholder="Enter ID" required>
             <br>
             <br>
-            <button type="submit" onclick="DeletePlayer()">Delete Player</button>
+            <button type="button" onclick="DeletePlayer()">Delete Player</button>
             <div class="success-message" id="successMessage">Player deleted successfully!</div>
         </form>
     </center>
@@ -104,10 +104,22 @@
 
             let idElement = document.getElementById("id");
 
-            fetch("http://localhost:8080/api/v1/player/"+ idElement.value, requestOptions)
+            fetch("http://localhost:8080/api/v1/player/" + idElement.value, requestOptions)
                 .then(response => response.json())
-                .then(result => console.log(result))
+                .then(result => {
+                    console.log(result);
+                    showSuccessMessage();
+                })
                 .catch(error => console.log('error', error));
+        }
+
+        function showSuccessMessage() {
+            var successMessage = document.getElementById("successMessage");
+            successMessage.style.display = "block";
+
+            setTimeout(function () {
+                successMessage.style.display = "none";
+            }, 3000); // Hide the success message after 3 seconds
         }
     </script>
 </body>
